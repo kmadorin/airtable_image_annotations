@@ -1,0 +1,7 @@
+.annotation {
+    border-left: 2px solid transparent;
+}
+
+.annotation--selected {
+    border-left: 2px solid red;
+}

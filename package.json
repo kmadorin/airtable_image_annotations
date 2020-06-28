@@ -1,0 +1,18 @@
+{
+    "dependencies": {
+        "@airtable/blocks": "0.0.52",
+        "dayjs": "^1.8.28",
+        "konva": "^6.0.0",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-konva": "^16.13.0-3"
+    },
+    "devDependencies": {
+        "eslint": "^6.8.0",
+        "eslint-plugin-react": "^7.20.0",
+        "eslint-plugin-react-hooks": "^2.5.1"
+    },
+    "scripts": {
+        "lint": "eslint frontend"
+    }
+}
