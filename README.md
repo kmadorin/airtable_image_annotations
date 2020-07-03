@@ -17,6 +17,8 @@ Create annotations for images stored in Attachment fields and save it back to Ai
 
 ## See the block running
 
+![Block demo](assets/demo.gif)
+
 ## Try it in action
 
 ## Future TODOs
