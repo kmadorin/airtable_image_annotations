@@ -13,7 +13,7 @@ const AnnotationForm = ({onSubmit, onChange}) => {
 	const handleChange = (e) => {
 		onChange(e.target.value);
 		setValue(e.target.value);
-	}
+	};
 
 	return (<form onSubmit={handleSubmit} style={{textAlign:'right'}}>
 		<Box display={'flex'} padding={3} borderTop={'thick'} >

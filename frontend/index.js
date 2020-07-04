@@ -82,9 +82,14 @@ function ImageAnnotationsBlock() {
 	if (annotationsTable && activeTable && annotationsTable.id !== activeTable.id && selectedField && selectedField.type === FieldType.MULTIPLE_ATTACHMENTS) {
 		const cellValue = selectedRecord.getCellValue(selectedField);
 		if (cellValue && cellValue[0].url) {
-			const selectedRecordAnnotations = selectedRecord && selectedRecord.getCellValue(activeTable.getFieldByNameIfExists(annotationsTable.name));
-			const selectedRecordAnnotationsIds = selectedRecordAnnotations && selectedRecordAnnotations.map(annotation => annotation.id);
-			annotationsRecords = allAnnotationsRecords && selectedRecordAnnotations && allAnnotationsRecords.filter(record => selectedRecordAnnotationsIds.includes(record.id));
+			annotationsRecords = allAnnotationsRecords && allAnnotationsRecords.filter(record => {
+				const imageInfo = record.getCellValue(annotationsTable.getFieldByNameIfExists('Image')).split(',');
+				const tableId = imageInfo[0];
+				const recordId = imageInfo[1];
+				const fieldId = imageInfo[2];
+
+				return (tableId === activeTable.id) && (recordId === selectedRecordId) && (fieldId === selectedFieldId);
+			});
 		}
 	}
 
@@ -111,6 +116,7 @@ function ImageAnnotationsBlock() {
 			const author = annotationRecord.getCellValue('Author');
 			const createdTime = Date.parse(annotationRecord.createdTime.toISOString());
 			const createdTimeFromNow = dayjs(createdTime).fromNow(true);
+			const recordId = annotationRecord.id;
 
 			let position = null;
 
@@ -120,7 +126,7 @@ function ImageAnnotationsBlock() {
 			}
 
 			return {
-				recordId: annotationRecord.id,
+				recordId,
 				position,
 				text,
 				author,
@@ -147,10 +153,10 @@ function ImageAnnotationsBlock() {
 	const createNewAnnotationRecord = (annotationsTable, annotation) => {
 		const position = annotation.position ? `${annotation.position.x},${annotation.position.y}` : '';
 		return annotationsTable.createRecordAsync({
+			Image: [activeTable.id, selectedRecordId, selectedFieldId].join(','),
 			'Text': annotation.text,
 			'Author': currentUserId,
 			'Position': position,
-			'Image': [{id: selectedRecordId}],
 		})
 	};
 
@@ -164,7 +170,6 @@ function ImageAnnotationsBlock() {
 			'Text': annotation.text,
 			'Author': currentUserId,
 			'Position': position,
-			'Image': [{id: selectedRecordId}],
 		})
 	};
 

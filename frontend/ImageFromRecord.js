@@ -46,7 +46,6 @@ const ImageFromRecord = ({activeTable, selectedRecordId, selectedFieldId, newAnn
 
 	const handleClick = (e) => {
 		const pointerPosition = e.target.getStage().getPointerPosition();
-		console.log(pointerPosition);
 		addAnnotation({position: {x: pointerPosition.x/initialScale, y: pointerPosition.y/initialScale}})
 	};
 

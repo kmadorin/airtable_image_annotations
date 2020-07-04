@@ -6,33 +6,14 @@ import {
 	TablePicker, Text,
 	useGlobalConfig,
 	Button,
-	useBase,
 } from '@airtable/blocks/ui';
 
-import {FieldType} from '@airtable/blocks/models';
+import NewTableForm from "./NewTableForm";
 
 const SettingsForm = ({setIsSettingsOpen, annotationsTable, isSettings}) => {
 	const globalConfig = useGlobalConfig();
 	const [canBeAnnotationsTable, setCanBeAnnotationsTable] = useState(true);
 	const [isValid, setIsValid] = useState(true);
-
-	const base = useBase();
-
-	const createAnnotationsTable = async() => {
-		const name = 'My Annotations';
-
-		const fields = [
-			{name: 'Name', type: FieldType.SINGLE_LINE_TEXT},
-			{name: 'Image', type: FieldType.SINGLE_LINE_TEXT},
-			{name: 'Text', type: FieldType.SINGLE_LINE_TEXT},
-			{name: 'Author', type: FieldType.SINGLE_LINE_TEXT},
-			{name: 'Position', type: FieldType.SINGLE_LINE_TEXT},
-		];
-
-		if (base.unstable_hasPermissionToCreateTable(name, fields)) {
-			await base.unstable_createTableAsync(name, fields);
-		}
-	};
 
 	return (
 		<Box
@@ -64,9 +45,9 @@ const SettingsForm = ({setIsSettingsOpen, annotationsTable, isSettings}) => {
 						setCanBeAnnotationsTable(canBe);
 					}}
 				/>
-				{!isSettings && <Box>
-					<Text marginTop={2} marginBottom={0} textAlign={'center'}>or</Text>
-					<Button size={'large'} variant={'secondary'} width={'100%'} onClick={createAnnotationsTable}>Create a new table</Button>
+				{!isSettings && <Box textAlign={'center'}>
+					<Text marginTop={2} marginBottom={2}>or</Text>
+					<NewTableForm />
 				</Box>}
 				{isSettings && <Box display="flex" justifyContent={"center"} marginTop={'10px'}>
 					<Button
