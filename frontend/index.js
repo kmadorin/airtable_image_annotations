@@ -83,10 +83,11 @@ function ImageAnnotationsBlock() {
 		const cellValue = selectedRecord.getCellValue(selectedField);
 		if (cellValue && cellValue[0].url) {
 			annotationsRecords = allAnnotationsRecords && allAnnotationsRecords.filter(record => {
-				const imageInfo = record.getCellValue(annotationsTable.getFieldByNameIfExists('Image')).split(',');
-				const tableId = imageInfo[0];
-				const recordId = imageInfo[1];
-				const fieldId = imageInfo[2];
+				const imageInfo = record.getCellValue(annotationsTable.getFieldByNameIfExists('Image'));
+				const imageInfoArray = imageInfo && imageInfo.split(',');
+				const tableId = imageInfoArray && imageInfoArray[0];
+				const recordId = imageInfoArray && imageInfoArray[1];
+				const fieldId = imageInfoArray && imageInfoArray[2];
 
 				return (tableId === activeTable.id) && (recordId === selectedRecordId) && (fieldId === selectedFieldId);
 			});
