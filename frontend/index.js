@@ -112,23 +112,16 @@ function ImageAnnotationsBlock() {
 
 	useEffect(() => {
 		const annotationsFromRecords = !annotationsRecords ? [] : annotationsRecords.map(annotationRecord => {
-			const rawPosition = annotationRecord.getCellValue('Position');
+			const marker = JSON.parse(annotationRecord.getCellValue('Marker'));
 			const text = annotationRecord.getCellValue('Text');
 			const author = annotationRecord.getCellValue('Author');
 			const createdTime = Date.parse(annotationRecord.createdTime.toISOString());
-			const createdTimeFromNow = dayjs(createdTime).fromNow(true);
+			const createdTimeFromNow = dayjs(createdTime).fromNow();
 			const recordId = annotationRecord.id;
-
-			let position = null;
-
-			if (rawPosition) {
-				const positionArray = rawPosition.split(',');
-				position = {x: +positionArray[0], y: +positionArray[1]};
-			}
 
 			return {
 				recordId,
-				position,
+				marker,
 				text,
 				author,
 				createdTime,
@@ -152,12 +145,11 @@ function ImageAnnotationsBlock() {
 	};
 
 	const createNewAnnotationRecord = (annotationsTable, annotation) => {
-		const position = annotation.position ? `${annotation.position.x},${annotation.position.y}` : '';
 		return annotationsTable.createRecordAsync({
 			Image: [activeTable.id, selectedRecordId, selectedFieldId].join(','),
 			'Text': annotation.text,
 			'Author': currentUserId,
-			'Position': position,
+			'Marker': JSON.stringify(annotation.marker),
 		})
 	};
 
@@ -166,21 +158,20 @@ function ImageAnnotationsBlock() {
 	};
 
 	const updateAnnotationRecord = (annotationsTable, annotation) => {
-		const position = annotation.position ? `${annotation.position.x},${annotation.position.y}` : '';
 		return annotationsTable.updateRecordAsync(annotation.recordId, {
 			'Text': annotation.text,
 			'Author': currentUserId,
-			'Position': position,
+			'Marker': JSON.stringify(annotation.marker),
 		})
 	};
 
 	const handleAnnotationSubmit = () => {
 		if (newAnnotation && annotationsTable) {
 			createNewAnnotationRecord(annotationsTable, newAnnotation).then((res) => {
-				setNewAnnotation(null);
 				const createdTime = new Date();
 				const createdTimeFromNow = dayjs(createdTime).fromNow(true);
 				setAnnotations([...annotations, {...newAnnotation, createdTime, createdTimeFromNow,  author: currentUserId, recordId: res}]);
+				setNewAnnotation(null);
 			}).catch((e) => {
 				console.log(e);
 			});
@@ -243,6 +234,7 @@ function ImageAnnotationsBlock() {
 						display={annotationsTableId ? 'block' : 'flex'}
 						justifyContent={annotationsTableId ? 'flex-start' : 'center'}
 						alignItems={annotationsTableId ? 'stretch' : 'center'} height={'100%'}
+						borderLeft={'thick'}
 					>
 						{!annotationsTableId && <SettingsForm
 							setIsSettingsOpen={setIsSettingsOpen} annotationsTable={annotationsTable} isSettings={false}

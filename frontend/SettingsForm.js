@@ -35,7 +35,7 @@ const SettingsForm = ({setIsSettingsOpen, annotationsTable, isSettings}) => {
 					table={annotationsTable}
 					onChange={newTable => {
 						const fields = newTable.fields.map(field => field.name);
-						const requiredFields = ['Image', 'Text', 'Author', 'Position'];
+						const requiredFields = ['Image', 'Text', 'Author', 'Marker'];
 						const canBe = requiredFields.reduce((acc, field) => {
 							return acc && fields.includes(field);
 						}, true);
