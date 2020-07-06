@@ -19,7 +19,7 @@ const NewTableForm = () => {
 			{name: 'Text', type: FieldType.SINGLE_LINE_TEXT},
 			{name: 'Author', type: FieldType.SINGLE_LINE_TEXT},
 			{name: 'Image', type: FieldType.SINGLE_LINE_TEXT},
-			{name: 'Position', type: FieldType.SINGLE_LINE_TEXT},
+			{name: 'Marker', type: FieldType.SINGLE_LINE_TEXT},
 		];
 
 		if (base.unstable_hasPermissionToCreateTable(name, fields)) {
@@ -75,7 +75,7 @@ const NewTableForm = () => {
 				<Button type="submit" variant="primary" width={'100%'}>Create</Button>
 			</form>}
 			{!isActive &&
-			<TextButton display={'inline-block'} onClick={() => setIsActive(true)}>Create a new table</TextButton>}
+			<TextButton onClick={() => setIsActive(true)}>Create a new table</TextButton>}
 		</Box>
 	)
 };

@@ -41,7 +41,7 @@ const Annotation = ({annotation, index, isSelected, editAnnotation, deleteAnnota
 	};
 
 	const activeAnnotationStyle = {
-		borderLeft: '2px solid red'
+		borderLeft: '2px solid #2d7ff9'
 	};
 
 	const annotationStyle = {
